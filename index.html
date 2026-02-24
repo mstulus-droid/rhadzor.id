@@ -180,6 +180,7 @@
     .profile-wrap {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 14px;
       padding: 16px;
       border-radius: var(--radius-md);
@@ -192,19 +193,13 @@
       overflow: visible;
     }
 
-    .floating-chip {
-      position: absolute;
-      top: -12px;
-      right: -10px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #7ceeff, #ffd9bf);
-      color: #171717;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    .profile-identity {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
     }
 
     .profile {
@@ -224,14 +219,23 @@
       display: block;
     }
 
-    .profile-meta strong {
+    .profile-identity strong {
       display: block;
       font-size: 1.08rem;
       letter-spacing: 0.01em;
     }
 
+    .profile-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-height: 100%;
+    }
+
     .profile-meta .hero-tags {
-      margin-top: 8px;
+      margin-top: 0;
+      justify-content: center;
     }
 
     .profile-note {
@@ -470,12 +474,19 @@
 
     @media (max-width: 560px) {
       .profile-wrap {
-        align-items: flex-start;
+        justify-content: center;
       }
 
-      .floating-chip {
-        top: -10px;
-        right: 8px;
+      .profile-meta .hero-tags span:nth-child(1) {
+        transform: rotate(-4deg) translateY(-1px);
+      }
+
+      .profile-meta .hero-tags span:nth-child(2) {
+        transform: rotate(3deg) translateY(1px);
+      }
+
+      .profile-meta .hero-tags span:nth-child(3) {
+        transform: rotate(-2deg) translateY(0);
       }
 
       .signal-grid,
@@ -524,12 +535,13 @@
 
         <div class="hero-media">
           <div class="profile-wrap">
-            <span class="floating-chip">learning mode</span>
-            <figure class="profile">
-              <img src="assets/profile/pp_rhadzor.jpg" alt="Foto profil Rhadzor">
-            </figure>
-            <div class="profile-meta">
+            <div class="profile-identity">
+              <figure class="profile">
+                <img src="assets/profile/pp_rhadzor.jpg" alt="Foto profil Rhadzor">
+              </figure>
               <strong>Rhadzor</strong>
+            </div>
+            <div class="profile-meta">
               <div class="hero-tags">
                 <span>Curious by Default</span>
                 <span>Pattern Seeker</span>
