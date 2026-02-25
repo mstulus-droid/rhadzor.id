@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhadzor — Digital Craftsman & Book Wanderer</title>
+    <meta name="description" content="Ruang pribadi Rhadzor: eksperimen digital di Studio, catatan bacaan di Unboxed.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fraunces:opsz,wght@9..144,400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Studio Theme */
+            --studio-cyan: #00d9ff;
+            --studio-pink: #ff00ff;
+            --studio-dark: #050508;
+            
+            /* Unboxed Theme */
+            --unboxed-accent: #c06f3f;
+            --unboxed-paper: #f4efe8;
+            --unboxed-text: #352f2b;
+            
+            /* Neutral */
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s var(--transition), visibility 0.8s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--studio-cyan) 50%, var(--unboxed-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .loader-bar {
+            width: 150px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--studio-cyan), var(--unboxed-accent));
+            transition: width 0.3s ease;
+        }
+
+        /* Navigation */
+        .nav-main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .nav-brand {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-brand span {
+            font-weight: 300;
+            opacity: 0.6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section - Rhadzor Introduction */
+        .hero-main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 6rem 2rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 50%, rgba(192, 111, 63, 0.08) 0%, transparent 40%);
+            z-index: 0;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-kicker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .hero-kicker::before,
+        .hero-kicker::after {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 0.95;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .hero-title .name {
+            display: block;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 50%, var(--studio-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .hero-title .tagline {
+            font-family: 'Fraunces', serif;
+            font-size: 0.35em;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.6);
+            display: block;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .hero-desc {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-desc strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Identity Pills */
+        .identity-pills {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .pill {
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .pill:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .pill.cyan {
+            border-color: rgba(0, 217, 255, 0.4);
+            color: var(--studio-cyan);
+        }
+
+        .pill.orange {
+            border-color: rgba(192, 111, 63, 0.4);
+            color: var(--unboxed-accent);
+        }
+
+        .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Scroll Indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.4);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, currentColor, transparent);
+        }
+
+        /* Dual Pathways Section */
+        .pathways-section {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .pathways-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .pathways-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 1rem;
+        }
+
+        .pathways-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .pathways-title span {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            color: #fff;
+        }
+
+        /* Cards Container */
+        .pathways-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Studio Card */
+        .pathway-card {
+            position: relative;
+            padding: 3rem;
+            border-radius: 24px;
+            text-decoration: none;
+            color: inherit;
+            overflow: hidden;
+            transition: all 0.4s var(--transition);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pathway-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card-studio {
+            background: linear-gradient(145deg, #0a0b12 0%, #050508 100%);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .card-studio::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card-studio:hover::before {
+            opacity: 1;
+        }
+
+        .card-studio:hover {
+            border-color: rgba(0, 217, 255, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 217, 255, 0.15);
+        }
+
+        /* Unboxed Card */
+        .card-unboxed {
+            background: linear-gradient(145deg, #fff8ed 0%, #f4efe8 100%);
+            border: 1px solid rgba(192, 111, 63, 0.2);
+            color: var(--unboxed-text);
+        }
+
+        .card-unboxed::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .card-unboxed:hover {
+            border-color: rgba(192, 111, 63, 0.5);
+            box-shadow: 0 20px 60px rgba(192, 111, 63, 0.15);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-studio .card-icon {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            color: var(--studio-cyan);
+        }
+
+        .card-unboxed .card-icon {
+            background: rgba(192, 111, 63, 0.1);
+            border: 1px solid rgba(192, 111, 63, 0.3);
+            color: var(--unboxed-accent);
+        }
+
+        .card-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .card-studio .card-label {
+            color: var(--studio-cyan);
+        }
+
+        .card-unboxed .card-label {
+            color: var(--unboxed-accent);
+        }
+
+        .card-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .card-studio .card-title {
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .card-unboxed .card-title {
+            font-family: 'Fraunces', serif;
+            color: var(--unboxed-text);
+        }
+
+        .card-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+            opacity: 0.8;
+            max-width: 280px;
+        }
+
+        .card-footer {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            margin-top: 2rem;
+        }
+
+        .card-studio .card-footer {
+            color: var(--studio-cyan);
+        }
+
+        .card-unboxed .card-footer {
+            color: var(--unboxed-accent);
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+        }
+
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .pathway-card:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        /* Footer */
+        .main-footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--studio-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-tagline {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-copy {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-main {
+                padding: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-main {
+                padding: 5rem 1.5rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 12vw, 4rem);
+            }
+
+            .identity-pills {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pill {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
+            }
+
+            .pathways-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pathway-card {
+                min-height: 300px;
+                padding: 2rem;
+            }
+
+            .card-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--transition);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* Floating Elements */
+        .float-element {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .float-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--studio-cyan);
+            top: 20%;
+            left: 10%;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .float-quote {
+            font-family: 'Fraunces', serif;
+            font-size: 4rem;
+            color: var(--unboxed-accent);
+            bottom: 20%;
+            right: 10%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">RHADZOR</div>
+            <div class="loader-bar">
+                <div class="loader-progress" id="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-main">
+        <a href="#" class="nav-brand">rhadzor<span>.id</span></a>
+        <div class="nav-links">
+            <a href="#about">Tentang</a>
+            <a href="#explore">Jelajahi</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Rhadzor First -->
+    <section class="hero-main" id="about">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        
+        <!-- Floating Decorations -->
+        <div class="float-element float-code">&lt;/&gt;</div>
+        <div class="float-element float-quote">"</div>
+
+        <div class="hero-content">
+            <div class="hero-kicker reveal">Personal Space of</div>
+            
+            <h1 class="hero-title reveal delay-1">
+                <span class="name">Rhadzor</span>
+                <span class="tagline">Digital Craftsman & Book Wanderer</span>
+            </h1>
+            
+            <p class="hero-desc reveal delay-2">
+                Saya membangun <strong>aplikasi dan game</strong> sebagai latihan menyusun sistem. 
+                Saya membaca dan menulis <strong>catatan buku</strong> untuk merapikan cara berpikir. 
+                <br><br>
+                <em style="opacity: 0.7;">Tidak semua sempurna, tapi semua adalah proses belajar.</em>
+            </p>
+
+            <div class="identity-pills reveal delay-3">
+                <div class="pill cyan">
+                    <span class="pill-dot"></span>
+                    Code Builder
+                </div>
+                <div class="pill orange">
+                    <span class="pill-dot"></span>
+                    Pattern Seeker
+                </div>
+                <div class="pill">
+                    <span class="pill-dot" style="background: #fff;"></span>
+                    Lifelong Learner
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-hint reveal delay-4">
+            <span>GULIR</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Dual Pathways Section -->
+    <section class="pathways-section" id="explore">
+        <div class="pathways-header reveal">
+            <div class="pathways-label">Dua Ruang Kreativitas</div>
+            <h2 class="pathways-title">
+                Pilih <span>petualangan</span> Anda
+            </h2>
+        </div>
+
+        <div class="pathways-grid">
+            <!-- Studio Card -->
+            <a href="https://studio.rhadzor.id" class="pathway-card card-studio reveal delay-1">
+                <div class="card-content">
+                    <div class="card-icon">&lt;/&gt;</div>
+                    <div class="card-label">Digital Playground</div>
+                    <h3 class="card-title">Studio</h3>
+                    <p class="card-desc">
+                        Aplikasi yang berguna. Game yang menghibur. 
+                        Eksperimen digital dengan fokus pada kesederhanaan dan fungsi.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    Jelajahi Studio <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <!-- Unboxed Card -->
+            <a href="https://unboxed.rhadzor.id" class="pathway-card card-unboxed reveal delay-2">
+                <div class="card-content">
+                    <div class="card-icon">❝</div>
+                    <div class="card-label">Reading Notes</div>
+                    <h3 class="card-title">Unboxed</h3>
+                    <p class="card-desc">
+                        Bukan resensi. Bukan ringkasan. 
+                        Hanya pemikiran yang tertinggal setelah membaca.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    Buka Catatan <span class="arrow">→</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">Rhadzor</div>
+            <p class="footer-tagline">"Membangun hal kecil. Memikirkan hal besar."</p>
+            
+            <div class="footer-links">
+                <a href="https://studio.rhadzor.id">Studio</a>
+                <a href="https://unboxed.rhadzor.id">Unboxed</a>
+            </div>
+            
+            <p class="footer-copy">© 2026 Rhadzor. Semarang, Indonesia.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Animation
+        window.addEventListener('load', () => {
+            const progress = document.getElementById('loader-progress');
+            const loader = document.getElementById('loader');
+            let width = 0;
+            
+            const interval = setInterval(() => {
+                width += Math.random() * 25 + 10;
+                if (width > 100) width = 100;
+                progress.style.width = width + '%';
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        initAnimations();
+                    }, 400);
+                }
+            }, 80);
+        });
+
+        // Scroll Reveal Animation
+        function initAnimations() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            reveals.forEach(el => observer.observe(el));
+        }
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect for floating elements
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            
+            document.querySelectorAll('.float-element').forEach(el => {
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
