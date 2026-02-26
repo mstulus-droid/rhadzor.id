@@ -255,13 +255,24 @@
       font-size: clamp(1rem, 2vw, 1.25rem);
       color: rgba(255, 255, 255, 0.7);
       max-width: 680px;
-      margin: 0 auto 2rem;
+      margin: 0 auto 1.1rem;
       line-height: 1.8;
     }
 
     .hero-desc strong {
       color: #ffffff;
       font-weight: 700;
+    }
+
+    .hero-quote {
+      max-width: 680px;
+      margin: 0 auto 2rem;
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-size: clamp(1rem, 1.9vw, 1.2rem);
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.82);
+      opacity: 0.95;
     }
 
     .identity-pills {
@@ -583,6 +594,10 @@
       font-size: 1.1rem;
     }
 
+    .tagline-mobile {
+      display: none;
+    }
+
     .footer-copy {
       font-family: "JetBrains Mono", monospace;
       font-size: 0.7rem;
@@ -603,7 +618,7 @@
       }
 
       .hero-title {
-        font-size: clamp(2.5rem, 12vw, 4rem);
+        font-size: clamp(3rem, 15vw, 5rem);
         text-align: center;
       }
 
@@ -629,6 +644,14 @@
 
       .card-title {
         font-size: 2rem;
+      }
+
+      .tagline-desktop {
+        display: none;
+      }
+
+      .tagline-mobile {
+        display: inline;
       }
     }
 
@@ -737,8 +760,6 @@
     <div class="float-element float-quote">"</div>
 
     <div class="hero-content">
-      <div class="hero-kicker reveal">Digital Space of</div>
-
       <div class="hero-title-row reveal delay-1">
         <h1 class="hero-title">
           <span class="name">Rhadz<span class="profile-letter" aria-hidden="true"><img src="assets/profile/pp_rhadzor.jpg" alt=""></span>r</span>
@@ -747,11 +768,10 @@
       </div>
 
       <p class="hero-desc reveal delay-2">
-        Saya membangun <strong>aplikasi dan game</strong> sebagai latihan menyusun sistem.
-        Saya membaca dan menulis <strong>catatan buku</strong> untuk merapikan cara berpikir.
-        <br><br>
-        <em style="opacity: 0.7;">Tidak semua sempurna, tapi semua adalah proses belajar.</em>
+        Saya membangun aplikasi dan game untuk memahami cara sistem bekerja.
+        Saya membaca, lalu menulis &mdash; karena menulis adalah cara saya benar-benar mengerti.
       </p>
+      <blockquote class="hero-quote reveal delay-2">"Tidak semua sempurna, tapi semua adalah proses belajar."</blockquote>
 
       <div class="identity-pills reveal delay-3">
         <div class="pill cyan">
@@ -787,8 +807,8 @@
           <div class="card-label">Digital Playground</div>
           <h3 class="card-title">Studio</h3>
           <p class="card-desc">
-            Aplikasi yang berguna. Game yang menghibur.
-            Eksperimen digital dengan fokus pada kesederhanaan dan fungsi.
+            Aplikasi kecil, game sederhana, dan eksperimen yang kadang berhasil &mdash; kadang tidak.
+            Tapi selalu ada yang bisa dipelajari.
           </p>
         </div>
         <div class="card-footer">
@@ -815,7 +835,10 @@
 
   <footer class="main-footer">
     <div class="footer-content">
-      <p class="footer-tagline">Membangun hal kecil. Memikirkan hal besar.</p>
+      <p class="footer-tagline">
+        <span class="tagline-desktop">Hal kecil yang dibangun. Hal besar yang dipikirkan. Pelan-pelan.</span>
+        <span class="tagline-mobile">Membangun hal kecil. Memikirkan hal besar.</span>
+      </p>
       <p class="footer-copy">2026. Semarang, Indonesia.</p>
     </div>
   </footer>

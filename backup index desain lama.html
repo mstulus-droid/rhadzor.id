@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rhadzor</title>
+  <meta name="description" content="Ruang pribadi Rhadzor: eksperimen digital, aplikasi, game, dan catatan bacaan.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+
+  <meta property="og:title" content="Rhadzor">
+  <meta property="og:description" content="Ruang pribadi Rhadzor: eksperimen digital, aplikasi, game, dan catatan bacaan.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rhadzor.id/">
+  <meta property="og:image" content="https://rhadzor.id/assets/favicon/android-chrome-512x512.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rhadzor">
+  <meta name="twitter:description" content="Ruang pribadi Rhadzor: eksperimen digital, aplikasi, game, dan catatan bacaan.">
+  <meta name="twitter:image" content="https://rhadzor.id/assets/favicon/android-chrome-512x512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Fraunces:opsz,wght,SOFT@9..144,500..700,80&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090a10;
+      --panel: #13151f;
+      --line: rgba(255, 255, 255, 0.16);
+      --line-soft: rgba(80, 61, 43, 0.2);
+      --text-main: #f7f3ec;
+      --text-muted: rgba(247, 243, 236, 0.74);
+      --warm-text: #3b3129;
+      --warm-muted: #726252;
+      --cyan: #37d8ff;
+      --orange: #c16f41;
+      --shadow-neon: 0 18px 50px rgba(55, 216, 255, 0.22);
+      --shadow-warm: 0 16px 35px rgba(113, 74, 43, 0.18);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --container: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Outfit", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(900px 520px at 0% -10%, rgba(55, 216, 255, 0.2), transparent 60%),
+        radial-gradient(980px 560px at 100% 2%, rgba(193, 111, 65, 0.22), transparent 62%),
+        linear-gradient(145deg, #07080d 0%, #0f121b 56%, #1b1512 100%);
+      line-height: 1.6;
+      padding: 28px 20px 24px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 38px 38px;
+      opacity: 0.28;
+      z-index: -1;
+    }
+
+    .container {
+      width: min(var(--container), 100%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(140deg, rgba(12, 15, 24, 0.95) 0%, rgba(20, 24, 37, 0.92) 52%, rgba(38, 28, 22, 0.9) 100%);
+      box-shadow: 0 20px 60px rgba(2, 4, 8, 0.45);
+      padding: clamp(24px, 5vw, 54px);
+      overflow: hidden;
+      isolation: isolate;
+      animation: rise 560ms ease-out;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 40%);
+      mix-blend-mode: screen;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      right: -90px;
+      top: -110px;
+      background: radial-gradient(circle, rgba(55, 216, 255, 0.32), transparent 68%);
+      filter: blur(12px);
+      z-index: -1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: clamp(18px, 4vw, 34px);
+      align-items: center;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.15rem, 5.4vw, 4rem);
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+      text-wrap: balance;
+    }
+
+    .hero h1 span {
+      display: block;
+      font-family: "Fraunces", serif;
+      background: linear-gradient(90deg, #ffd9bf 0%, #7ceeff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: clamp(1rem, 2vw, 1.12rem);
+      max-width: 54ch;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hero-tags span {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      padding: 6px 12px;
+      color: #dff7ff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .hero-media {
+      display: grid;
+      gap: 14px;
+      justify-items: stretch;
+      position: relative;
+      padding-top: 10px;
+    }
+
+    .profile-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(17, 24, 34, 0.38));
+      backdrop-filter: blur(4px);
+      transform: translateX(10px) rotate(-1.5deg);
+      box-shadow: 0 16px 36px rgba(5, 9, 16, 0.42);
+      position: relative;
+      overflow: visible;
+    }
+
+    .profile-identity {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .profile {
+      width: clamp(96px, 11vw, 132px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.84);
+      box-shadow: 0 0 0 6px rgba(55, 216, 255, 0.16), var(--shadow-neon);
+      flex: 0 0 auto;
+    }
+
+    .profile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-identity strong {
+      display: block;
+      font-size: 1.08rem;
+      letter-spacing: 0.01em;
+    }
+
+    .profile-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-height: 100%;
+    }
+
+    .profile-meta .hero-tags {
+      margin-top: 0;
+      justify-content: center;
+    }
+
+    .profile-note {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d9f8ff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.07);
+      width: fit-content;
+      justify-self: end;
+      transform: rotate(-4deg);
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .signal {
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(8, 12, 19, 0.52);
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+
+    .signal:nth-child(odd) {
+      transform: rotate(1.1deg);
+    }
+
+    .signal:nth-child(even) {
+      transform: rotate(-1.1deg);
+    }
+
+    .signal:hover {
+      transform: translateY(-2px) rotate(0deg);
+      border-color: rgba(124, 238, 255, 0.58);
+    }
+
+    .signal strong {
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .signal span {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+    }
+
+    section {
+      margin-top: clamp(26px, 4.7vw, 50px);
+      animation: rise 680ms ease-out;
+    }
+
+    .about {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, #fff8ed 0%, #f4e7d8 100%);
+      color: var(--warm-text);
+      padding: clamp(20px, 3.4vw, 32px);
+      box-shadow: var(--shadow-warm);
+    }
+
+    h2 {
+      font-size: clamp(1.18rem, 2.5vw, 1.65rem);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .about p {
+      color: var(--warm-muted);
+      max-width: 72ch;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .pillar {
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      text-decoration: none;
+      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pillar:hover {
+      transform: translateY(-5px);
+    }
+
+    .pillar h3 {
+      font-size: 1.38rem;
+      margin-bottom: 10px;
+    }
+
+    .pillar p {
+      font-size: 0.98rem;
+      max-width: 35ch;
+    }
+
+    .link-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+    }
+
+    .studio-card {
+      color: #f6fcff;
+      border: 1px solid rgba(55, 216, 255, 0.38);
+      background: linear-gradient(145deg, #0d1a28 0%, #10172a 58%, #0f2731 100%);
+      box-shadow: 0 12px 35px rgba(4, 28, 41, 0.45);
+    }
+
+    .studio-card:hover {
+      box-shadow: 0 20px 44px rgba(55, 216, 255, 0.2);
+      border-color: var(--cyan);
+    }
+
+    .studio-card p {
+      color: rgba(235, 250, 255, 0.78);
+    }
+
+    .studio-card .link-label {
+      color: var(--cyan);
+    }
+
+    .unboxed-card {
+      color: #3c2f25;
+      border: 1px solid rgba(139, 89, 52, 0.35);
+      background: linear-gradient(145deg, #fff8ed 0%, #f6e6d5 55%, #efd9c3 100%);
+      box-shadow: 0 14px 32px rgba(126, 78, 45, 0.18);
+    }
+
+    .unboxed-card:hover {
+      border-color: var(--orange);
+      box-shadow: 0 20px 38px rgba(148, 89, 47, 0.24);
+    }
+
+    .unboxed-card p {
+      color: #6f5e50;
+    }
+
+    .unboxed-card .link-label {
+      color: #a75f35;
+    }
+
+    .global-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 18px;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(7, 10, 18, 0.78);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 26px rgba(2, 4, 8, 0.35);
+    }
+
+    .global-switch a {
+      text-decoration: none;
+      color: rgba(236, 245, 252, 0.82);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .global-switch a:hover {
+      color: #ffffff;
+      border-color: rgba(124, 238, 255, 0.4);
+      background: rgba(124, 238, 255, 0.14);
+    }
+
+    .global-switch a.is-active {
+      color: #081018;
+      border-color: rgba(124, 238, 255, 0.78);
+      background: linear-gradient(90deg, #7ceeff, #ffd9bf);
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: clamp(34px, 6vw, 64px);
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      color: rgba(242, 236, 229, 0.77);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .hero-media {
+        max-width: 460px;
+        padding-top: 0;
+      }
+
+      .profile-wrap {
+        transform: none;
+      }
+
+      .profile {
+        width: clamp(82px, 22vw, 104px);
+      }
+
+      .profile-note {
+        justify-self: start;
+        transform: none;
+      }
+
+      .pillars {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .profile-wrap {
+        justify-content: center;
+      }
+
+      .profile-meta .hero-tags span:nth-child(1) {
+        transform: rotate(-4deg) translateY(-1px);
+      }
+
+      .profile-meta .hero-tags span:nth-child(2) {
+        transform: rotate(3deg) translateY(1px);
+      }
+
+      .profile-meta .hero-tags span:nth-child(3) {
+        transform: rotate(-2deg) translateY(0);
+      }
+
+      .signal-grid,
+      .profile-note {
+        display: none;
+      }
+
+      .signal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .signal,
+      .signal:nth-child(odd),
+      .signal:nth-child(even) {
+        transform: none;
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <nav class="global-switch" aria-label="Global domain navigation">
+      <a class="is-active" href="https://rhadzor.id">Rhadzor</a>
+      <a href="https://studio.rhadzor.id">Studio</a>
+      <a href="https://unboxed.rhadzor.id">Unboxed</a>
+    </nav>
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <p class="hero-kicker">Rhadzor.id</p>
+          <h1>Membangun hal kecil.<span>Memikirkan hal besar.</span></h1>
+          <p>Eksperimen digital, catatan bacaan, dan perjalanan belajar yang sedang berlangsung.</p>
+        </div>
+
+        <div class="hero-media">
+          <div class="profile-wrap">
+            <div class="profile-identity">
+              <figure class="profile">
+                <img src="assets/profile/pp_rhadzor.jpg" alt="Foto profil Rhadzor">
+              </figure>
+              <strong>Rhadzor</strong>
+            </div>
+            <div class="profile-meta">
+              <div class="hero-tags">
+                <span>Curious by Default</span>
+                <span>Pattern Seeker</span>
+                <span>Lifelong Learner</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="signal-grid">
+            <div class="signal">
+              <strong>Build</strong>
+              <span>Membuat aplikasi dan permainan kecil.</span>
+            </div>
+            <div class="signal">
+              <strong>Understand</strong>
+              <span>Mempelajari cara sistem bekerja.</span>
+            </div>
+            <div class="signal">
+              <strong>Reflect</strong>
+              <span>Menulis hal-hal yang tersisa setelah membaca.</span>
+            </div>
+            <div class="signal">
+              <strong>Refine</strong>
+              <span>Memperbaiki sedikit demi sedikit.</span>
+            </div>
+          </div>
+
+          <p class="profile-note">on progress, always</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <h2>Tentang rhadzor.id</h2>
+      <p>
+        Sebuah ruang untuk bereksperimen. Saya membuat aplikasi dan game sebagai latihan menyusun sistem.
+        Saya membaca dan menulis catatan untuk merapikan cara berpikir.
+        Tidak semuanya sempurna, tapi semuanya adalah proses belajar.
+      </p>
+    </section>
+
+    <section>
+      <h2>Dua Pilar Utama</h2>
+      <div class="pillars">
+        <a class="pillar studio-card" href="https://studio.rhadzor.id">
+          <div>
+            <h3>Studio</h3>
+            <p>Tempat saya mengubah ide menjadi hal yang berguna atau menghibur. Fokus pada kesederhanaan, fungsi, dan eksplorasi teknis.</p>
+          </div>
+          <span class="link-label">Jelajahi Studio <span aria-hidden="true">-></span></span>
+        </a>
+
+        <a class="pillar unboxed-card" href="https://unboxed.rhadzor.id">
+          <div>
+            <h3>Unboxed</h3>
+            <p>Catatan dari buku yang saya baca. Bukan ringkasan, bukan resensi, hanya pemikiran yang tertinggal.</p>
+          </div>
+          <span class="link-label">Buka Catatan <span aria-hidden="true">-></span></span>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <p>Langkah perlahan.<br>Perubahan berkelanjutan.</p>
+    </footer>
+  </main>
+</body>
+</html>
